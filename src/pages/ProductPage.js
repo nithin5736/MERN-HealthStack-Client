@@ -10,7 +10,11 @@ import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import { Avatar, TextField } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
-import { prescriptionRoute, productRoute } from "../utils/APIRoutes";
+import {
+  prescriptionRoute,
+  prescriptionStatusCheckRoute,
+  productRoute,
+} from "../utils/APIRoutes";
 import { USER_KEY } from "../utils/secretkeys";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { storage } from "../utils/firebase";
@@ -29,7 +33,11 @@ const ProductPage = () => {
     JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY)) &&
       JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY)).username
   );
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY))
+  );
   const [flag, setFlag] = useState(null);
+  const [prescriptionStatus, setPrescriptionStatus] = useState(null);
 
   useEffect(() => {
     axios
@@ -40,6 +48,39 @@ const ProductPage = () => {
           setFlag(true);
         } else {
           setFlag(false);
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
+
+  useEffect(() => {
+    axios
+      .post(prescriptionStatusCheckRoute, {
+        user,
+        productId: id,
+      })
+      .then((res) => {
+        console.log(res.data);
+        if (res.data.prescription === null) {
+          alert("Please upload your prescription");
+        } else {
+          if (
+            res.data &&
+            res.data.prescription &&
+            res.data.prescription.status
+          ) {
+            console.log(res.data.prescription.status);
+            setPrescriptionStatus(res.data.prescription.status);
+            alert(
+              "Your prescription has been approved. You can now add this product to your cart"
+            );
+          } else {
+            alert(
+              "Your prescription has not been approved yet. Please wait for 24 hours"
+            );
+          }
         }
       })
       .catch((err) => {
@@ -64,7 +105,7 @@ const ProductPage = () => {
           setTotal(total + parseInt(product.price));
           return [...prevState, product];
         });
-        toast.success("Food item added to cart", {
+        toast.success("Item added to cart", {
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -75,7 +116,7 @@ const ProductPage = () => {
           theme: "colored",
         });
       } else {
-        toast.warning("Food item already exists in cart", {
+        toast.warning("Item already exists in cart", {
           position: "bottom-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -120,7 +161,9 @@ const ProductPage = () => {
               {
                 headers: {
                   authorization: `Bearer ${
-                    JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY)).accessToken
+                    JSON.parse(
+                      localStorage.getItem(process.env.REACT_APP_USER_KEY)
+                    ).accessToken
                   }`,
                 },
               }
@@ -138,6 +181,33 @@ const ProductPage = () => {
         });
     });
     setFlag(true);
+    alert(
+      "Please check your prescription status in 24 hours by clicking on the 'Check Prescription Status' button"
+    );
+  };
+
+  const prescriptionStatusHandler = async () => {
+    axios
+      .post(prescriptionStatusCheckRoute, {
+        user,
+        productId: id,
+      })
+      .then((res) => {
+        console.log(res.data.prescription.status);
+        if (res.data.prescription.status) {
+          setPrescriptionStatus(res.data.prescription.status);
+          alert(
+            "Your prescription has been approved. You can now add this product to your cart"
+          );
+        } else {
+          alert(
+            "Your prescription has not been approved yet. Please wait for 24 hours"
+          );
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (
@@ -162,7 +232,7 @@ const ProductPage = () => {
               <Button onClick={cartHandler}>ADD TO CART</Button>
             </AddContainer>
           )}
-          {product.category === "prescribe" && flag && (
+          {product.category === "prescribe" && prescriptionStatus && (
             <AddContainer>
               <Button onClick={cartHandler}>ADD TO CART</Button>
             </AddContainer>
@@ -191,6 +261,21 @@ const ProductPage = () => {
               </button>
             </Div>
           )}
+          <button
+            type="submit"
+            class="btn btn-success"
+            style={{
+              margin: "16px 0px 0px 0px",
+            }}
+            onClick={prescriptionStatusHandler}
+          >
+            Check Prescription Status
+          </button>
+          <br />
+          <small>
+            Click on <b>*Check Prescription Status*</b> button to check whether
+            your prescription is accepted or rejected
+          </small>
           <Div>
             <AddCustomerReview
               productname={product.productname}
@@ -271,7 +356,7 @@ const Button = styled.button`
 `;
 
 const Div = styled.div`
-  margin-top: 10%;
+  margin-top: 5%;
 `;
 
 export default ProductPage;

@@ -10,7 +10,7 @@ const CustomerReviews = ({ productname }) => {
     axios
       .get(allCommentsRoute)
       .then((res) => {
-        console.log(res.data);
+        // console.log(res.data);
         setComments(res.data);
       })
       .catch((err) => {
@@ -28,7 +28,7 @@ const CustomerReviews = ({ productname }) => {
             return (
               <div>
                 <h6 style={{ color: "orange" }}>{comment.user.username}</h6>
-                <p>{comment.comment}</p>
+                <p>{comment && comment.comment}</p>
               </div>
             );
           }
