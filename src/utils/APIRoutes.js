@@ -1,4 +1,4 @@
-export const hostURL = "https://healthstack-server.vercel.app";
+export const hostURL = "https://mern-healthstack-server-git-master-nithin5736.vercel.app";
 export const registerRoute = `${hostURL}/api/auth/register`;
 export const loginRoute = `${hostURL}/api/auth/login`;
 export const medicineProductsRoute = `${hostURL}/api/products/medicines`;

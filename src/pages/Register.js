@@ -48,85 +48,85 @@ const Register = () => {
   const submitHandler = async (e) => {
     e.preventDefault();
     if (validateForm()) {
-      navigate("/otp", { state: user });
-      // if (user.usertype === "Seller") {
-      //   const res = await axios.post(registerRoute , {
-      //     firstname: user.firstname,
-      //     lastname: user.lastname,
-      //     username: user.username,
-      //     email: user.email,
-      //     password: user.password,
-      //     confirmPassword: user.confirmPassword,
-      //     usertype: user.usertype,
-      //     cart: [],
-      //     products: [],
-      //     status: "active",
-      //     transaction: 0,
-      //     pincode: user.pincode,
-      //     phone: user.phone,
-      //     address: user.address,
-      //   })
+      // navigate("/otp", { state: user });
+      if (user.usertype === "Seller") {
+        const res = await axios.post(registerRoute , {
+          firstname: user.firstname,
+          lastname: user.lastname,
+          username: user.username,
+          email: user.email,
+          password: user.password,
+          confirmPassword: user.confirmPassword,
+          usertype: user.usertype,
+          cart: [],
+          products: [],
+          status: "active",
+          transaction: 0,
+          pincode: user.pincode,
+          phone: user.phone,
+          address: user.address,
+        })
         
-      //   if(res.data.status){
-      //     setUser({
-      //       firstname: "",
-      //       lastname: "",
-      //       username: "",
-      //       email: "",
-      //       password: "",
-      //       confirmPassword: "",
-      //       usertype: "",
-      //       pincode: "",
-      //       phone: "",
-      //       address: "",
-      //     });
-      //     alert('Registered Successfully');
-      //     navigate("/login");
-      //   }
-      //   else{
-      //     alert(res.data.msg);
-      //     return;
-      //   }
-      // } 
-      // else {
-      //   const res = await axios.post(registerRoute, {
-      //     firstname: user.firstname,
-      //     lastname: user.lastname,
-      //     username: user.username,
-      //     email: user.email,
-      //     password: user.password,
-      //     confirmPassword: user.confirmPassword,
-      //     usertype: user.usertype,
-      //     cart: [],
-      //     status: "active",
-      //     transaction: 0,
-      //     pincode: user.pincode,
-      //     phone: user.phone,
-      //     address: user.address,
-      //   })
+        if(res.data.status){
+          setUser({
+            firstname: "",
+            lastname: "",
+            username: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            usertype: "",
+            pincode: "",
+            phone: "",
+            address: "",
+          });
+          alert('Registered Successfully');
+          navigate("/login");
+        }
+        else{
+          alert(res.data.msg);
+          return;
+        }
+      } 
+      else {
+        const res = await axios.post(registerRoute, {
+          firstname: user.firstname,
+          lastname: user.lastname,
+          username: user.username,
+          email: user.email,
+          password: user.password,
+          confirmPassword: user.confirmPassword,
+          usertype: user.usertype,
+          cart: [],
+          status: "active",
+          transaction: 0,
+          pincode: user.pincode,
+          phone: user.phone,
+          address: user.address,
+        })
         
-      //   if(res.data.status){
-      //     localStorage.setItem(USER_KEY, JSON.stringify({username:user.username, email:user.email, password: user.password}));
-      //     setUser({
-      //       firstname: "",
-      //       lastname: "",
-      //       username: "",
-      //       email: "",
-      //       password: "",
-      //       confirmPassword: "",
-      //       usertype: "",
-      //       pincode: "",
-      //       phone: "",
-      //       address: "",
-      //     });
-      //     alert('Registered Successfully');
-      //     navigate("/login");
-      //   }
-      //   else{
-      //     alert(res.data.msg);
-      //     return;
-      //   }
-      // } 
+        if(res.data.status){
+          localStorage.setItem(process.env.REACT_APP_USER_KEY, JSON.stringify({username:user.username, email:user.email, password: user.password}));
+          setUser({
+            firstname: "",
+            lastname: "",
+            username: "",
+            email: "",
+            password: "",
+            confirmPassword: "",
+            usertype: "",
+            pincode: "",
+            phone: "",
+            address: "",
+          });
+          alert('Registered Successfully');
+          navigate("/login");
+        }
+        else{
+          alert(res.data.msg);
+          return;
+        }
+      } 
     }
 };
 

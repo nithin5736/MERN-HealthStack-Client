@@ -48,7 +48,7 @@ const StripeCheckoutButton = ({ total, totalCount }) => {
       description={total-0.1 * total+totalCount +parseInt(`${totalCount > 0 ? deliver : 0}`)}
       panelLabel="Pay Now"
       token={onToken}
-      stripeKey={process.env.REACT_APP_STRIPE_KEY}
+      stripeKey={stripeKey}
     />
   );
 };
