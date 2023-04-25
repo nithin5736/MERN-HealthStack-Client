@@ -133,6 +133,7 @@ const Navbar = () => {
                   to="/"
                   onClick={() => {
                     localStorage.clear();
+                    window.location.reload();
                   }}
                 >
                   <CDropdownItem>
