@@ -17,24 +17,20 @@ const Login = () => {
   });
   const [u, setU] = useState({});
 
+
   const checkUser = async (user) => {
-    const res = await axios.post(loginRoute, {
+    const res = await axios.post(loginRoute,{
       username: user.username,
       email: user.email,
       password: user.password,
       usertype: user.usertype,
     });
-    if (res.data.status) {
-      localStorage.setItem(
-        USER_KEY,
-        JSON.stringify({ ...user, accessToken: res.data.accessToken })
-      );
-      localStorage.setItem(
-        PROFILE_PHOTO_KEY,
-        JSON.stringify({ url: res.data.user.profilePic })
-      );
+    if(res.data.status){
+      localStorage.setItem(process.env.REACT_APP_USER_KEY, JSON.stringify({...user, accessToken: res.data.accessToken}));
+      localStorage.setItem(process.env.REACT_APP_PROFILE_PHOTO_KEY, JSON.stringify({url: res.data.user.profilePic}));
       return true;
-    } else {
+    }
+    else{
       alert(res.data.msg + ". Please register.");
       return false;
     }
@@ -55,6 +51,38 @@ const Login = () => {
       usertype: "",
     });
   };
+
+  // const getEmail = () => {
+  //   axios
+  //     .get(`${hostURL}/users?email=${user.email}`)
+  //     .then((res) => {
+  //       setU(res.data);
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // };
+
+  // const sendEmailHandler = () => {
+  //   // console.log(form.current.elements);
+  //   // console.log(u[0].password);
+  //   form.current.elements.password.value = u[0].password;
+  //   emailjs
+  //     .sendForm(
+  //       "service_sf3ocxq",
+  //       "template_7s8xlhf",
+  //       form.current,
+  //       "9jjEZ4Q1b7CYAn7Uu"
+  //     )
+  //     .then(
+  //       (result) => {
+  //         console.log(result.text);
+  //       },
+  //       (error) => {
+  //         console.log(error.text);
+  //       }
+  //     );
+  // };
 
   return (
     <Container>
@@ -116,7 +144,9 @@ const Login = () => {
           </Para>
           <p style={{ fontSize: "12px" }}>
             <Link to="/forgotPassword">
-              <b color={{ color: "black" }}>FORGOT PASSWORD</b>
+              <b color={{color: "black"}}>
+                FORGOT PASSWORD
+              </b>
             </Link>
           </p>
           <p style={{ fontSize: "12px" }}>
