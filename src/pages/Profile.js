@@ -14,14 +14,14 @@ import { USER_KEY, PROFILE_PHOTO_KEY } from "../utils/secretkeys";
 
 const Profile = () => {
   const [profile, setProfile] = useState(
-    JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY))
+    JSON.parse(localStorage.getItem(USER_KEY))
   );
-  const [actualName, setActualName] = useState(JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY)).username);
-  const [actualEmail, setActualEmail] = useState(JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY)).email);
+  const [actualName, setActualName] = useState(JSON.parse(localStorage.getItem(USER_KEY)) && JSON.parse(localStorage.getItem(USER_KEY)).username);
+  const [actualEmail, setActualEmail] = useState(JSON.parse(localStorage.getItem(USER_KEY)) && JSON.parse(localStorage.getItem(USER_KEY)).email);
   const [image, setImage] = useState(null);
   const [phone, setPhone] = useState("");
   const [address, setAddress] = useState("");
-  const [url, setUrl] = useState(localStorage.getItem(process.env.REACT_APP_PROFILE_PHOTO_KEY) && JSON.parse(localStorage.getItem(process.env.REACT_APP_PROFILE_PHOTO_KEY)).url);
+  const [url, setUrl] = useState(localStorage.getItem(PROFILE_PHOTO_KEY) && JSON.parse(localStorage.getItem(PROFILE_PHOTO_KEY)).url);
   const navigate = useNavigate();
 
   
@@ -83,7 +83,7 @@ const Profile = () => {
       getDownloadURL(imageRef)
       .then((url)=>{
           setUrl(url)
-          localStorage.setItem(process.env.PROFILE_PHOTO_KEY, JSON.stringify({url: url}));
+          localStorage.setItem(PROFILE_PHOTO_KEY, JSON.stringify({url: url}));
         })
        .catch((error)=>{ 
           console.log(error)
@@ -142,7 +142,7 @@ const Profile = () => {
                 aria-describedby="emailHelp"
                 placeholder="Username"
                 minlength="5"
-                value={profile.username}
+                value={profile && profile.username}
                 onChange={(e) => {
                   setProfile({ ...profile, username: e.target.value });
                 }}
@@ -156,7 +156,7 @@ const Profile = () => {
                 class="form-control"
                 id="exampleInputPassword1"
                 placeholder="Email"
-                value={profile.email}
+                value={profile && profile.email}
                 onChange={(e) => {
                   setProfile({ ...profile, email: e.target.value });
                 }}
@@ -172,7 +172,7 @@ const Profile = () => {
                 id="exampleInputPassword1"
                 placeholder="Password"
                 minlength="5"
-                value={profile.password}
+                value={profile && profile.password}
                 onChange={(e) => {
                   setProfile({ ...profile, password: e.target.value });
                 }}

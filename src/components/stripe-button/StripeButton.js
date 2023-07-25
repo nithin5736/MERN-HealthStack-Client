@@ -13,14 +13,13 @@ const StripeCheckoutButton = ({ total, totalCount }) => {
       totalCount +
       parseInt(`${totalCount > 0 ? deliver : 0}`)
   );
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY)));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem(USER_KEY)));
 
   const onToken = () => {
     if (!user) {
       alert("Please Login to do Stripe Payment");
       return;
     }
-    console.log(user);
     axios
       .post(paymentRoute, {
         amount: priceForStripe,
@@ -30,12 +29,7 @@ const StripeCheckoutButton = ({ total, totalCount }) => {
         alert("payment successful");
         return;
       });
-    // .catch(error => {
-    //     alert(
-    //         'There was an issue with your payment'
-    //     );
-    //     return;
-    // });
+      window.location.reload();
   };
 
   return (

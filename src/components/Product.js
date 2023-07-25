@@ -23,7 +23,7 @@ const Product = ({ item }) => {
       alert("Please upload the Doctor Prescription");
       return;
     }
-    if (!localStorage.getItem(process.env.REACT_APP_USER_KEY)) {
+    if (!localStorage.getItem(USER_KEY)) {
       navigate("/register");
     } else {
       let flag = true;
@@ -67,7 +67,7 @@ const Product = ({ item }) => {
   const searchHandler = async () => {
     navigate(`/products/${item._id}`);
   };
-  console.log(item);
+
   return (
     <>
       <Container>

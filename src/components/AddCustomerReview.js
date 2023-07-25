@@ -8,7 +8,6 @@ const AddCustomerReview = ({ username, productname }) => {
 
   const submitHandler = (e) => {
     e.preventDefault();
-    console.log(comment);
     if (username) {
       if (comment) {
         axios

@@ -51,7 +51,6 @@ const submitHandler = async (e) => {
     e.preventDefault();
     if(otpRef.current.value === otp)
     {
-      console.log(location.state)
       if (location.state.usertype === "Seller") {
         const res = await axios.post(registerRoute , {
           firstname: location.state.firstname,

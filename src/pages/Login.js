@@ -26,8 +26,8 @@ const Login = () => {
       usertype: user.usertype,
     });
     if(res.data.status){
-      localStorage.setItem(process.env.REACT_APP_USER_KEY, JSON.stringify({...user, accessToken: res.data.accessToken}));
-      localStorage.setItem(process.env.REACT_APP_PROFILE_PHOTO_KEY, JSON.stringify({url: res.data.user.profilePic}));
+      localStorage.setItem(USER_KEY, JSON.stringify({...user, accessToken: res.data.accessToken}));
+      localStorage.setItem(PROFILE_PHOTO_KEY, JSON.stringify({url: res.data.user.profilePic}));
       return true;
     }
     else{

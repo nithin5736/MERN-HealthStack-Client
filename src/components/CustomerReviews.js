@@ -27,7 +27,7 @@ const CustomerReviews = ({ productname }) => {
             flag = true;
             return (
               <div>
-                <h6 style={{ color: "orange" }}>{comment.user.username}</h6>
+                <h6 style={{ color: "orange" }}>{comment && comment.user && comment.user.username}</h6>
                 <p>{comment && comment.comment}</p>
               </div>
             );

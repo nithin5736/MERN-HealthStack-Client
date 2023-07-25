@@ -30,11 +30,11 @@ const ProductPage = () => {
   const [fileUrl, setFileUrl] = useState(null);
   const { id } = useParams();
   const [actualName, setActualName] = useState(
-    JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY)) &&
-      JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY)).username
+    JSON.parse(localStorage.getItem(USER_KEY)) &&
+      JSON.parse(localStorage.getItem(USER_KEY)).username
   );
   const [user, setUser] = useState(
-    JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY))
+    JSON.parse(localStorage.getItem(USER_KEY))
   );
   const [flag, setFlag] = useState(null);
   const [prescriptionStatus, setPrescriptionStatus] = useState(null);
@@ -62,21 +62,20 @@ const ProductPage = () => {
         productId: id,
       })
       .then((res) => {
-        console.log(res.data);
-        if (res.data.prescription === null) {
+        if (res.data.prescription === null && product.category === "prescribe") {
           alert("Please upload your prescription");
-        } else {
+        } else{
           if (
             res.data &&
             res.data.prescription &&
-            res.data.prescription.status
+            res.data.prescription.status &&
+            product.category === "prescribe"
           ) {
-            console.log(res.data.prescription.status);
             setPrescriptionStatus(res.data.prescription.status);
             alert(
               "Your prescription has been approved. You can now add this product to your cart"
             );
-          } else {
+          } else if(product.category === "prescribe"){
             alert(
               "Your prescription has not been approved yet. Please wait for 24 hours"
             );
@@ -89,7 +88,7 @@ const ProductPage = () => {
   }, []);
 
   const cartHandler = () => {
-    if (!localStorage.getItem(process.env.REACT_APP_USER_KEY)) {
+    if (!localStorage.getItem(USER_KEY)) {
       navigate("/register");
     } else {
       let flag = true;
@@ -162,14 +161,13 @@ const ProductPage = () => {
                 headers: {
                   authorization: `Bearer ${
                     JSON.parse(
-                      localStorage.getItem(process.env.REACT_APP_USER_KEY)
+                      localStorage.getItem(USER_KEY)
                     ).accessToken
                   }`,
                 },
               }
             )
             .then((res) => {
-              console.log(res.data);
             })
             .catch((err) => {
               console.log(err);
@@ -193,8 +191,7 @@ const ProductPage = () => {
         productId: id,
       })
       .then((res) => {
-        console.log(res.data.prescription.status);
-        if (res.data.prescription.status) {
+        if (res.data && res.data.prescription && res.data.prescription.status) {
           setPrescriptionStatus(res.data.prescription.status);
           alert(
             "Your prescription has been approved. You can now add this product to your cart"
@@ -261,21 +258,25 @@ const ProductPage = () => {
               </button>
             </Div>
           )}
-          <button
-            type="submit"
-            class="btn btn-success"
-            style={{
-              margin: "16px 0px 0px 0px",
-            }}
-            onClick={prescriptionStatusHandler}
-          >
-            Check Prescription Status
-          </button>
-          <br />
-          <small>
-            Click on <b>*Check Prescription Status*</b> button to check whether
-            your prescription is accepted or rejected
-          </small>
+          {product.category === "prescribe" && !prescriptionStatus && (
+              <>
+                <button
+                type="submit"
+                class="btn btn-success"
+                style={{
+                  margin: "16px 0px 0px 0px",
+                }}
+                onClick={prescriptionStatusHandler}
+              >
+                Check Prescription Status
+              </button>
+              <br />
+              <small>
+                Click on <b>*Check Prescription Status*</b> button to check whether
+                your prescription is accepted or rejected
+              </small>
+            </>)
+          }
           <Div>
             <AddCustomerReview
               productname={product.productname}

@@ -51,7 +51,6 @@ const PharmaceuticalList = () => {
   };
 
   const searchHandler = (e) => {
-    console.log(e.target.value);
     setSearchInput(e.target.value);
     const temp = popularProducts.filter((p) => {
       return p.productname.toLowerCase().includes(e.target.value.toLowerCase());

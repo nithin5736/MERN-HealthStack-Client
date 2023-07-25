@@ -22,7 +22,7 @@ const ContactUs = () => {
 
   const sendQueryHandler = (e) => {
     e.preventDefault();
-    if (localStorage.getItem(process.env.REACT_APP_USER_KEY) === null) {
+    if (localStorage.getItem(USER_KEY) === null) {
       alert('Please Login');
       navigate("/login");
       return;
@@ -36,7 +36,7 @@ const ContactUs = () => {
       },
       {
         headers: {
-          authorization: `Bearer ${JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY)).accessToken}`
+          authorization: `Bearer ${JSON.parse(localStorage.getItem(USER_KEY)).accessToken}`
         }
       })
       .then((res) => {

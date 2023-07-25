@@ -39,7 +39,6 @@ const AddProduct = () => {
       if (products[i].productname === addProduct.productname) {
         alert("item alredy exits");
         setFlag(0);
-        console.log(flag)
         return;
       }
     }
@@ -60,7 +59,7 @@ const AddProduct = () => {
           type: addProduct.type,
         }, {
           headers: {
-            authorization: "Bearer " + JSON.parse(localStorage.getItem(process.env.REACT_APP_USER_KEY)).accessToken 
+            authorization: "Bearer " + JSON.parse(localStorage.getItem(USER_KEY)).accessToken 
           }
         })
         .then((res) => {
