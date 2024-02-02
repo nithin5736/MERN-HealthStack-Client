@@ -17,10 +17,10 @@ const VerifyEmail = () => {
     if(otp !== 0)
     {
         emailjs.sendForm(
-            process.env.REACT_APP_USER_EMAIJS_SERVICE,
-            process.env.REACT_APP_USER_EMAIJS_TEMPLATE,
+            'service_apq7n1a',
+            'template_a45xceg',
             form.current,
-            process.env.REACT_APP_USER_EMAIJS_USERID,
+            'TKBKyhJ59B7QeY_lk',
         )
         .then(() => {
             console.log("success");
